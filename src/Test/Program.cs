@@ -27,7 +27,6 @@ namespace Test
 
             var inputWordsArray = inputWords.Values.First().ToArray();
 
-            //TODO: parallel for
             Parallel.For(0, inputWordsArray.Length, i =>
             {
                 var processedWordParts = processor.ProcessWord(inputWordsArray[i]);
@@ -46,44 +45,6 @@ namespace Test
                     Console.WriteLine(sb.ToString());
                 }
             });
-
-            //for(int i = 0; i < inputWordsArray.Length; i++)
-            //{
-            //    var processedWordParts = await processor.ProcessWord(inputWordsArray[i]);
-            //    if (processedWordParts == null)
-            //    {
-            //        Console.WriteLine($"Can't break word \"{inputWordsArray[i]}\"");
-            //    }
-            //    else
-            //    {
-
-            //        var sb = new StringBuilder();
-            //        foreach (var part in processedWordParts)
-            //        {
-            //            sb.Append(part + " ");
-            //        }
-            //        Console.WriteLine(sb.ToString());
-            //    }
-            //}
-
-            //foreach (var word in inputWords.Values.First())
-            //{
-            //    var processedWordParts = await processor.ProcessWord(word);
-            //    if(processedWordParts == null)
-            //    {
-            //        Console.WriteLine($"Can't break word \"{word}\"");
-            //    }
-            //    else
-            //    {
-
-            //        var sb = new StringBuilder();
-            //        foreach (var part in processedWordParts)
-            //        {
-            //            sb.Append(part + " ");
-            //        }
-            //        Console.WriteLine(sb.ToString());
-            //    }
-            //}
 
             stopwatch.Stop();
 
