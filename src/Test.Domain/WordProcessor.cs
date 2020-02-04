@@ -17,22 +17,28 @@ namespace Test.Domain
 
         public async Task<string[]> ProcessWord(string word)
         {
-            return GetSubstrings(word).ToArray();
+            var possibleSubstrings = GetAllPossibleSubstrings(word);
+
+            var mostSubstringsEntry = possibleSubstrings
+                .OrderBy(x => x.Length)
+                .FirstOrDefault();
+
+            return mostSubstringsEntry;
         }
 
-        private List<string> GetSubstrings(string inputString)
+        private List<string[]> GetAllPossibleSubstrings(string inputString)
         {
             var stringResult = "";
-            var accumulatorStack = new Stack<string>();//todo: use string [][]
+            var accumulatorStack = new Stack<string>();
+            var resultingSubstrings = new List<string[]>();
 
-            GetSubstrings(inputString, inputString.Length, stringResult, accumulatorStack);
+            GetSubstrings(inputString, inputString.Length, stringResult, accumulatorStack, resultingSubstrings);
 
-            var resultingSubstrings = stringResult.Split(new char[] { ' ' }).ToList();
             return resultingSubstrings;
         }
 
-        //parallel foreach
-        void GetSubstrings(string @string, int lastChar, string accumulator /*= ""*/, Stack<string> accumulatorStack)
+        //parallel for
+        void GetSubstrings(string @string, int lastChar, string accumulator /*= ""*/, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
         {
 
             for (int i = 1; i <= lastChar; i++)
@@ -49,13 +55,18 @@ namespace Test.Domain
                     {
                         accumulator += substringToCheck;
                         accumulatorStack.Push(substringToCheck);
+
+                        resultingSubstrings.Add(accumulatorStack.ToArray());
+                        accumulatorStack = new Stack<string>();
+
                         return;
                     }
 
                     var newSubstringLength = lastChar - i;
                     var newAccumulator = accumulator + substringToCheck + " ";
                     accumulatorStack.Push(substringToCheck);
-                    GetSubstrings(@string.Substring(i, newSubstringLength), newSubstringLength, newAccumulator, accumulatorStack);
+
+                    GetSubstrings(@string.Substring(i, newSubstringLength), newSubstringLength, newAccumulator, accumulatorStack, resultingSubstrings);
                 }
                 if(i == lastChar && accumulatorStack.Count != 0)
                 {

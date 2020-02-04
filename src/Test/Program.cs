@@ -23,13 +23,20 @@ namespace Test
             foreach(var word in inputWords.Values.First())
             {
                 var processedWordParts = await processor.ProcessWord(word);
-
-                var sb = new StringBuilder();
-                foreach (var part in processedWordParts)
+                if(processedWordParts == null)
                 {
-                    sb.Append(part + " ");
+                    Console.WriteLine($"Can't break word \"{word}\"");
                 }
-                Console.WriteLine(sb.ToString());
+                else
+                {
+
+                    var sb = new StringBuilder();
+                    foreach (var part in processedWordParts)
+                    {
+                        sb.Append(part + " ");
+                    }
+                    Console.WriteLine(sb.ToString());
+                }
             }
         }
     }
