@@ -25,7 +25,7 @@ namespace Test.Repository
                 .ToLower()
                 .Split(new[] { '\n' });
 
-            return words;
+            return words;//.OrderByDescending(x => x.Length).ToArray();
         }
     }
 }

@@ -23,30 +23,39 @@ namespace Test
 
             var processor = new WordBreaker(dictionary);
 
-            stopwatch.Start();
 
             var inputWordsArray = inputWords.Values.First().ToArray();
+
+            List<(string, string[])> resultingSubstrings = new List<(string, string[])>();
+
+            stopwatch.Start(); // start measuring
 
             Parallel.For(0, inputWordsArray.Length, i =>
             {
                 var processedWordParts = processor.ProcessWord(inputWordsArray[i]);
-                if (processedWordParts == null)
+
+                resultingSubstrings.Add((inputWordsArray[i], processedWordParts));
+            });
+
+            stopwatch.Stop();// stop measuring
+
+            foreach(var (originalString, substringsEntry) in resultingSubstrings)
+            {
+                if (substringsEntry == null)
                 {
-                    Console.WriteLine($"Can't break word \"{inputWordsArray[i]}\"");
+                    Console.WriteLine($"Can't break word \"{originalString}\"");
                 }
                 else
                 {
 
                     var sb = new StringBuilder();
-                    foreach (var part in processedWordParts)
+                    foreach (var part in substringsEntry)
                     {
                         sb.Append(part + " ");
                     }
                     Console.WriteLine(sb.ToString());
                 }
-            });
-
-            stopwatch.Stop();
+            }
 
             Console.WriteLine(new string('=', 50)); 
             Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} ms");

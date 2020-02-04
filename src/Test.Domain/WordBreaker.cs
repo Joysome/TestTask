@@ -12,7 +12,7 @@ namespace Test.Domain
 
         public WordBreaker(string[] dictionary)
         {
-            _dictionary = dictionary; // .OrderBy(x => x.Length).ToArray();
+            _dictionary = dictionary;
         }
 
         public string[] ProcessWord(string word)
@@ -36,13 +36,30 @@ namespace Test.Domain
             return resultingSubstrings;
         }
 
-        void GetSubstrings(string checkedString, int lastChar, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
+
+        private bool DictionaryHasSubstring(string substringToCheck)
+        {
+            for (int j = 0; j < _dictionary.Length; j++)
+            {
+                //if (_dictionary[j].Length != substringToCheck.Length)
+                //    continue;
+
+                if (_dictionary[j] == substringToCheck)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void GetSubstrings(string checkedString, int lastChar, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
         {
             for (int i = 1; i <= lastChar; i++)
             {
                 var substringToCheck = checkedString.Substring(0, i);
-
-                if (_dictionary.Any(x => x == substringToCheck))
+                                
+                if (DictionaryHasSubstring(substringToCheck))
                 {
                     if (i == lastChar)
                     {
