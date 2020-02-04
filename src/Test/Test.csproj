@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Test.Domain\Test.Domain.csproj" />
-    <ProjectReference Include="..\Test.Repository\Test.Repositories.csproj" />
+    <ProjectReference Include="..\Test.Repositories\Test.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

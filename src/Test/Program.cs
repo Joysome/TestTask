@@ -22,9 +22,8 @@ namespace Test
             var inputWords = await wordRepo.GetWords();
 
             var processor = new WordBreaker(dictionary);
-
-
-            var inputWordsArray = inputWords.Values.First().ToArray();
+            
+            var inputWordsArray = inputWords.Values.First().ToArray();//TODO: fix this for different languages
 
             List<(string, string[])> resultingSubstrings = new List<(string, string[])>();
 
