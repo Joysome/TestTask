@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace Test.Domain
 {
-    public class WordProcessor : IWordProcessor
+    public class WordBreaker : IWordBreaker
     {
         private readonly string[] _dictionary;
 
-        public WordProcessor(string[] dictionary)
+        public WordBreaker(string[] dictionary)
         {
-            _dictionary = dictionary;
+            _dictionary = dictionary; // .OrderBy(x => x.Length).ToArray();
         }
 
-        public async Task<string[]> ProcessWord(string word)
+        public string[] ProcessWord(string word)
         {
             var possibleSubstrings = GetAllPossibleSubstrings(word);
 
@@ -38,7 +38,6 @@ namespace Test.Domain
 
         void GetSubstrings(string checkedString, int lastChar, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
         {
-
             for (int i = 1; i <= lastChar; i++)
             {
                 var substringToCheck = checkedString.Substring(0, i);

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Test.Domain
 {
-    public interface IWordProcessor
+    public interface IWordBreaker
     {
-        Task<string[]> ProcessWord(string word);
+        string[] ProcessWord(string word);
     }
 }

@@ -24,6 +24,7 @@ namespace Test.Repository
                 .ReadAllText(_filePath, _encoding)
                 .ToLower()
                 .Split(new[] { '\n' });
+
             return words;
         }
     }

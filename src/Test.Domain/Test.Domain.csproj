@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IWordProcessor.cs" />
+    <Compile Include="IWordBreaker.cs" />
     <Compile Include="Language.cs" />
-    <Compile Include="WordProcessor.cs" />
+    <Compile Include="WordBreaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
