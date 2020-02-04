@@ -20,7 +20,8 @@ namespace Test
 
             var processor = new WordProcessor(dictionary);
 
-            foreach(var word in inputWords.Values.First())
+            //TODO: parallel for
+            foreach (var word in inputWords.Values.First())
             {
                 var processedWordParts = await processor.ProcessWord(word);
                 if(processedWordParts == null)

@@ -28,32 +28,25 @@ namespace Test.Domain
 
         private List<string[]> GetAllPossibleSubstrings(string inputString)
         {
-            var stringResult = "";
             var accumulatorStack = new Stack<string>();
             var resultingSubstrings = new List<string[]>();
 
-            GetSubstrings(inputString, inputString.Length, stringResult, accumulatorStack, resultingSubstrings);
+            GetSubstrings(inputString, inputString.Length, accumulatorStack, resultingSubstrings);
 
             return resultingSubstrings;
         }
 
-        //parallel for
-        void GetSubstrings(string @string, int lastChar, string accumulator /*= ""*/, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
+        void GetSubstrings(string checkedString, int lastChar, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
         {
 
             for (int i = 1; i <= lastChar; i++)
             {
-                var substringToCheck = @string.Substring(0, i);
+                var substringToCheck = checkedString.Substring(0, i);
 
-                // if dictionary conatins this prefix, then 
-                // we check for remaining string. Otherwise 
-                // we ignore this prefix (there is no else for 
-                // this if) and try next 
                 if (_dictionary.Any(x => x == substringToCheck))
                 {
                     if (i == lastChar)
                     {
-                        accumulator += substringToCheck;
                         accumulatorStack.Push(substringToCheck);
 
                         resultingSubstrings.Add(accumulatorStack.ToArray());
@@ -63,13 +56,16 @@ namespace Test.Domain
                     }
 
                     var newSubstringLength = lastChar - i;
-                    var newAccumulator = accumulator + substringToCheck + " ";
+                    var newSubstring = checkedString.Substring(i, newSubstringLength);
                     accumulatorStack.Push(substringToCheck);
 
-                    GetSubstrings(@string.Substring(i, newSubstringLength), newSubstringLength, newAccumulator, accumulatorStack, resultingSubstrings);
+                    GetSubstrings(newSubstring, newSubstringLength, accumulatorStack, resultingSubstrings);
                 }
-                if(i == lastChar && accumulatorStack.Count != 0)
+                else if (i == lastChar && accumulatorStack.Count != 0)
                 {
+                    // if the loop reaches the end of the word 
+                    // and there is no  dictionary entry for checked substring, 
+                    // then remove last valid entry and try to find new one
                     accumulatorStack.Pop();
                 }
             }
