@@ -21,8 +21,9 @@ namespace Test
             var dictionary = await dictionaryRepo.GetDictionaryWords();
             var inputWords = await wordRepo.GetWords();
 
-            var processor = new WordBreaker(dictionary);
-            
+            //var processor = new DynamicWordBreaker(dictionary); // approach for small dictionaries & input words ammount
+            var processor = new DeepFirstSearchWordBreaker(dictionary);
+
             var inputWordsArray = inputWords.Values.First().ToArray();//TODO: fix this for different languages
 
             List<(string, string[])> resultingSubstrings = new List<(string, string[])>();
