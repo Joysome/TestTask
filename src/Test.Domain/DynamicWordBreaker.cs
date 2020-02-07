@@ -17,16 +17,17 @@ namespace Test.Domain
 
         public string[] ProcessWord(string word)
         {
-            var possibleSubstrings = GetAllPossibleSubstrings(word);
+            var possibleBreaks = GetAllPossibleBreaks(word);
 
-            var mostSubstringsEntry = possibleSubstrings
+            var mostSubstringsEntry = possibleBreaks
+                .Where(x => x.Length > 1)
                 .OrderBy(x => x.Length)
                 .FirstOrDefault(); // TODO: rewrite as private method;
 
             return mostSubstringsEntry;
         }
 
-        private List<string[]> GetAllPossibleSubstrings(string inputString)
+        private List<string[]> GetAllPossibleBreaks(string inputString)
         {
             var accumulatorStack = new Stack<string>();
             var resultingSubstrings = new List<string[]>();
@@ -73,6 +74,7 @@ namespace Test.Domain
 
                     var newSubstringLength = lastChar - i;
                     var newSubstring = checkedString.Substring(i, newSubstringLength);
+
                     accumulatorStack.Push(substringToCheck);
 
                     GetSubstrings(newSubstring, newSubstringLength, accumulatorStack, resultingSubstrings);

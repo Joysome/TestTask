@@ -16,36 +16,40 @@ namespace Test.Domain
 
         public string[] ProcessWord(string word)
         {
-            var wordBreakVariants = WordBreak(word, _dictionary);
+            var wordBreakVariants = GetAllPossibleBreaks(word, _dictionary);
 
-            var mostWordsArray = wordBreakVariants.OrderBy(x => x.Count()).FirstOrDefault();
+            var mostWordsArray = wordBreakVariants
+                .OrderBy(x => x.Count())
+                .FirstOrDefault()
+                .ToArray();
 
             return mostWordsArray;
         }
 
-        public static List<string[]> WordBreak(string @string, string[] dictionary)
+        public static List<Stack<string>> GetAllPossibleBreaks(string @string, string[] dictionary)
         {
+            // an array to track words. Index of the word is the position in string where the word was found. 
+            // There can be multiple words in one pointer, so it is an array of lists.
             var wordsTrackingArray = new List<string>[@string.Length + 1];
             wordsTrackingArray[0] = new List<string>();
 
-            for (int pos = 0; pos < @string.Length; pos++)
+            for (int currentPosition = 0; currentPosition < @string.Length; currentPosition++)
             {
-                if (wordsTrackingArray[pos] == null)
+                if (wordsTrackingArray[currentPosition] == null)
                     continue;
 
                 for (var dictionaryWordIndex = 0; dictionaryWordIndex < dictionary.Length; dictionaryWordIndex++)
                 {
                     var dictionaryWord = dictionary[dictionaryWordIndex];
 
-                    int dictionaryWordLength = dictionaryWord.Length;
-                    int wordSubstringEndPosition = pos + dictionaryWordLength;
+                    int wordSubstringEndPosition = currentPosition + dictionaryWord.Length;
                     
-                    if (wordSubstringEndPosition > @string.Length || (pos == 0 && wordSubstringEndPosition == @string.Length))
+                    if (wordSubstringEndPosition > @string.Length || (currentPosition == 0 && wordSubstringEndPosition == @string.Length))
                     {
                         continue;
                     }
 
-                    if (@string.Substring(pos, dictionaryWordLength) == dictionaryWord)
+                    if (@string.Substring(currentPosition, dictionaryWord.Length) == dictionaryWord)
                     {
                         if (wordsTrackingArray[wordSubstringEndPosition] == null)
                         {
@@ -56,39 +60,30 @@ namespace Test.Domain
                 }
             }
 
-            var result = new List<string[]>();
+            var result = new List<Stack<string>>();
+
             if (wordsTrackingArray[@string.Length] == null)
                 return result;
 
-            List<string> temp = new List<string>();
-            DepthFirstSearch(wordsTrackingArray, @string.Length, result, temp);
+            var accumulator = new Stack<string>();
+            DepthFirstSearch(wordsTrackingArray, @string.Length, result, accumulator);
 
             return result;
         }
 
-        public static void DepthFirstSearch(List<string>[] wordsTrackingArray, int endPosition, List<string[]> result, List<string> tmp)
+        public static void DepthFirstSearch(List<string>[] wordsTrackingArray, int endPosition, List<Stack<string>> result, Stack<string> accumulator)
         {
             if (endPosition <= 0)
             {
-                //tmp.RemoveAt(tmp.Count - 1);
-                //result.Add(tmp.ToArray());
-
-                //todo: tmp.removeat(tmp.Count); return tmp
-                string path = tmp[tmp.Count - 1];
-                for (int i = tmp.Count - 2; i >= 0; i--)
-                {
-                    path += " " + tmp[i];
-                }
-
-                result.Add(/*tmp.Take(tmp.Count - 2).ToArray()*/tmp.ToArray());
+                result.Add(accumulator);
                 return;
             }
 
             for (var i = 0; i < wordsTrackingArray[endPosition].Count; i++)
             {
-                tmp.Add(wordsTrackingArray[endPosition][i]);
-                DepthFirstSearch(wordsTrackingArray, endPosition - wordsTrackingArray[endPosition][i].Length, result, tmp);
-                tmp.RemoveAt(tmp.Count - 1);
+                accumulator.Push(wordsTrackingArray[endPosition][i]);
+                DepthFirstSearch(wordsTrackingArray, endPosition - wordsTrackingArray[endPosition][i].Length, result, accumulator);
+                accumulator.Pop();
             }
         }
     }
