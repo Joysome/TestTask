@@ -21,7 +21,7 @@ namespace Test.Domain
 
             var mostSubstringsEntry = possibleSubstrings
                 .OrderBy(x => x.Length)
-                .FirstOrDefault();
+                .FirstOrDefault(); // TODO: rewrite as private method;
 
             return mostSubstringsEntry;
         }

@@ -22,7 +22,7 @@ namespace Test
             var inputWords = await wordRepo.GetWords();
 
             //var processor = new DynamicWordBreaker(dictionary); // approach for small dictionaries & input words ammount
-            var processor = new DeepFirstSearchWordBreaker(dictionary);
+            var processor = new DepthFirstSearchWordBreaker(dictionary);
 
             var inputWordsArray = inputWords.Values.First().ToArray();//TODO: fix this for different languages
 
@@ -39,23 +39,26 @@ namespace Test
 
             stopwatch.Stop();// stop measuring
 
-            foreach(var (originalString, substringsEntry) in resultingSubstrings)
+
+            var sb = new StringBuilder();
+
+            foreach (var (originalString, substringsEntry) in resultingSubstrings)
             {
                 if (substringsEntry == null)
                 {
-                    Console.WriteLine($"Can't break word \"{originalString}\"");
+                    sb.Append($"Can't break word \"{originalString}\"\n");
                 }
                 else
                 {
-
-                    var sb = new StringBuilder();
                     foreach (var part in substringsEntry)
                     {
                         sb.Append(part + " ");
                     }
-                    Console.WriteLine(sb.ToString());
+                    sb.Append("\n");
                 }
             }
+
+            Console.WriteLine(sb.ToString());
 
             Console.WriteLine(new string('=', 50)); 
             Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} ms");
