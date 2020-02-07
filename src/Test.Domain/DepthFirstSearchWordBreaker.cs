@@ -20,13 +20,12 @@ namespace Test.Domain
 
             var mostWordsArray = wordBreakVariants
                 .OrderBy(x => x.Count())
-                .FirstOrDefault()
-                .ToArray();
+                .FirstOrDefault();
 
             return mostWordsArray;
         }
 
-        public static List<Stack<string>> GetAllPossibleBreaks(string @string, string[] dictionary)
+        public static List<string[]> GetAllPossibleBreaks(string @string, string[] dictionary)
         {
             // an array to track words. Index of the word is the position in string where the word was found. 
             // There can be multiple words in one pointer, so it is an array of lists.
@@ -60,7 +59,7 @@ namespace Test.Domain
                 }
             }
 
-            var result = new List<Stack<string>>();
+            var result = new List<string[]>();
 
             if (wordsTrackingArray[@string.Length] == null)
                 return result;
@@ -71,18 +70,20 @@ namespace Test.Domain
             return result;
         }
 
-        public static void DepthFirstSearch(List<string>[] wordsTrackingArray, int endPosition, List<Stack<string>> result, Stack<string> accumulator)
+        public static void DepthFirstSearch(List<string>[] wordsTrackingArray, int endPosition, List<string[]> result, Stack<string> accumulator)
         {
             if (endPosition <= 0)
             {
-                result.Add(accumulator);
+                result.Add(accumulator.ToArray()); // TODO: use properly
                 return;
             }
 
             for (var i = 0; i < wordsTrackingArray[endPosition].Count; i++)
             {
                 accumulator.Push(wordsTrackingArray[endPosition][i]);
-                DepthFirstSearch(wordsTrackingArray, endPosition - wordsTrackingArray[endPosition][i].Length, result, accumulator);
+
+                var newEndPosition = endPosition - wordsTrackingArray[endPosition][i].Length;
+                DepthFirstSearch(wordsTrackingArray, newEndPosition, result, accumulator);
                 accumulator.Pop();
             }
         }
