@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Test.Domain;
 using Test.Domain.WordBreakers;
 using Test.Domain.WordProcessors;
+using Test.Helpers;
 using Test.Output;
 using Test.Repository;
 
@@ -37,6 +38,24 @@ namespace Test
 
             stopwatch.Stop();
 
+            WriteDiagnosticInfo(dictionary, inputWordsArray, breaker, processor, stopwatch);
+
+            //var outputWriter = new ConsoleOutputWriter();
+
+            var outputWriter = new TextFileOutputWriter("C:\\test\\res.tsv", "de", new RussianCommentaryGenerator());
+
+            outputWriter.WriteWords(resultingSubstrings);
+
+            Console.ReadLine();
+        }
+
+        private static void WriteDiagnosticInfo(
+            string[] dictionary, 
+            string[] inputWordsArray, 
+            DepthFirstSearchWordBreaker breaker, 
+            ParallelWordProcessor processor, 
+            Stopwatch stopwatch)
+        {
             Console.WriteLine(new string('=', 50));
             Console.WriteLine($"Breaker: {breaker.GetType().Name}");
             Console.WriteLine($"Processor: {processor.GetType().Name}");
@@ -44,12 +63,6 @@ namespace Test
             Console.WriteLine($"Input words count: {inputWordsArray.Length}");
             Console.WriteLine($"Time elapsed: {stopwatch.ElapsedMilliseconds} ms");
             Console.WriteLine(new string('=', 50));
-
-            var outputWriter = new ConsoleOutputWriter();
-
-            outputWriter.WriteWords(resultingSubstrings);
-
-            Console.ReadLine();
         }
     }
 }

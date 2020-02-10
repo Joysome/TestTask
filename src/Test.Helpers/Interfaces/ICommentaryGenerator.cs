@@ -4,6 +4,6 @@ namespace Test.Helpers.Interfaces
 {
     public interface ICommentaryGenerator
     {
-        string Generate(string originalWord, string[] substrings);
+        string Generate(int substringsCount);
     }
 }
