@@ -29,8 +29,8 @@ namespace Test
             var breaker = new DynamicWordBreaker(dictionary); // approach for small dictionaries & input words ammount
             //var breaker = new DepthFirstSearchWordBreaker(dictionary);
 
-            //var processor = new SerialWordProcessor(breaker); // for test purposes only
-            var processor = new ParallelWordProcessor(breaker);
+            var processor = new SerialWordProcessor(breaker); // for test purposes only
+            //var processor = new ParallelWordProcessor(breaker);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start(); // start measuring
@@ -44,7 +44,7 @@ namespace Test
             //var outputWriter = new ConsoleOutputWriter(); // for test purposes only
             var outputWriter = new TextFileOutputWriter("C:\\test\\res.tsv", "de", new RussianCommentaryGenerator());
 
-            //outputWriter.WriteWords(resultingSubstrings);
+            outputWriter.WriteWords(resultingSubstrings);
 
             Console.ReadLine();
         }

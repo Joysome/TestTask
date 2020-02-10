@@ -9,53 +9,59 @@ namespace Test.Domain.WordBreakers
 {
     public class DynamicWordBreaker : IWordBreaker
     {
-        private readonly string[] _dictionary;
+        private readonly HashSet<string> _dictionary;
 
         public DynamicWordBreaker(string[] dictionary)
         {
-            _dictionary = dictionary;
+            //Array.Sort(dictionary);
+            //_dictionary = dictionary;
+            _dictionary = new HashSet<string>(dictionary);
         }
 
         public string[] BreakWord(string word)
         {
             var possibleBreaks = GetAllPossibleBreaks(word);
 
-            var mostSubstringsEntry = possibleBreaks
-                .Where(x => x.Length > 1)
-                .OrderBy(x => x.Length)
-                .FirstOrDefault(); // TODO: rewrite as private method;
+            var mostSubstringsEntry = GetBreakWithMostSubstrings(possibleBreaks);
 
-            return mostSubstringsEntry;
+            return mostSubstringsEntry?.ToArray();
         }
 
-        private List<string[]> GetAllPossibleBreaks(string inputString)
+        private string[] GetBreakWithMostSubstrings(List<Stack<string>> possibleBreaks)
         {
-            var accumulatorStack = new Stack<string>();
-            var resultingSubstrings = new List<string[]>();
-
-            GetSubstrings(inputString, inputString.Length, accumulatorStack, resultingSubstrings);
-
-            return resultingSubstrings;
-        }
-
-
-        private bool DictionaryHasSubstring(string substringToCheck)
-        {
-            for (int j = 0; j < _dictionary.Length; j++)
-            {
-                //if (_dictionary[j].Length != substringToCheck.Length)
-                //    continue;
-
-                if (_dictionary[j] == substringToCheck)
+            var maxIndex = -1;
+            var maxCount = 0;
+            for(int i = 0; i < possibleBreaks.Count; i++) {
+                if(possibleBreaks[i].Count > maxCount)
                 {
-                    return true;
+                    maxIndex = i;
+                    maxCount = possibleBreaks[i].Count;
                 }
             }
 
-            return false;
+            if(maxIndex < 0 || maxCount < 2)
+            {
+                return null;
+            }
+
+            return possibleBreaks[maxIndex].ToArray();
         }
 
-        private void GetSubstrings(string checkedString, int lastChar, Stack<string> accumulatorStack, List<string[]> resultingSubstrings)
+        private List<Stack<string>> GetAllPossibleBreaks(string inputString)
+        {
+            var accumulatorStack = new Stack<string>();
+            var possibleBreaks = new List<Stack<string>>();
+
+            GetSubstrings(inputString, inputString.Length, accumulatorStack, possibleBreaks);
+
+            return possibleBreaks;
+        }
+
+
+        private bool DictionaryHasSubstring(string substringToCheck) =>
+            _dictionary.Contains(substringToCheck);//Array.BinarySearch(_dictionary, substringToCheck, StringComparer.OrdinalIgnoreCase) > 0;
+
+        private void GetSubstrings(string checkedString, int lastChar, Stack<string> accumulatorStack, List<Stack<string>> resultingBreaks)
         {
             for (int i = 1; i <= lastChar; i++)
             {
@@ -67,8 +73,11 @@ namespace Test.Domain.WordBreakers
                     {
                         accumulatorStack.Push(substringToCheck);
 
-                        resultingSubstrings.Add(accumulatorStack.ToArray());
-                        accumulatorStack = new Stack<string>();
+                        resultingBreaks.Add(new Stack<string>(accumulatorStack));
+                        accumulatorStack.Pop();
+
+                        if (accumulatorStack.Count != 0)
+                            accumulatorStack.Pop();
 
                         return;
                     }
@@ -78,7 +87,7 @@ namespace Test.Domain.WordBreakers
 
                     accumulatorStack.Push(substringToCheck);
 
-                    GetSubstrings(newSubstring, newSubstringLength, accumulatorStack, resultingSubstrings);
+                    GetSubstrings(newSubstring, newSubstringLength, accumulatorStack, resultingBreaks);
                 }
                 else if (i == lastChar && accumulatorStack.Count != 0)
                 {
@@ -91,119 +100,3 @@ namespace Test.Domain.WordBreakers
         }
     }
 }
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-
-//namespace Test.Domain
-//{
-//    public class WordBreaker : IWordBreaker
-//    {
-//        private readonly string[] _dictionary;
-
-//        public WordBreaker(string[] dictionary)
-//        {
-//            _dictionary = dictionary;
-//        }
-
-//        public string[] ProcessWord(string word)
-//        {
-//            var possibleSubstrings = GetAllPossibleSubstrings(word);
-
-//            string[] mostSubstringsEntry = GetMostSubstringsEntry(possibleSubstrings);
-
-//            return mostSubstringsEntry;
-//        }
-
-//        private string[] GetMostSubstringsEntry(List<Stack<string>> possibleSubstrings)
-//        {
-//            var maxCountEntry = possibleSubstrings.OrderBy(x => x.Count()).FirstOrDefault();
-//            return maxCountEntry?.ToArray() ?? null;
-
-//            string[] mostSubstringsEntry = null;
-
-//            var maxSubstringsCountEntryIndex = 0;
-//            var maxSubstringsCount = 0;
-//            for (var i = 0; i < possibleSubstrings.Count; i++)
-//            {
-//                var entrySubstringsCount = possibleSubstrings[i].Count();
-//                if (mostSubstringsEntry == null || entrySubstringsCount > mostSubstringsEntry.Length)
-//                {
-//                    maxSubstringsCountEntryIndex = i;
-//                    maxSubstringsCount = entrySubstringsCount;
-//                }
-//            }
-//            if(maxSubstringsCount < 2)
-//            {
-//                return null;
-//            }
-
-//            mostSubstringsEntry = possibleSubstrings[maxSubstringsCountEntryIndex].ToArray();
-
-//            return mostSubstringsEntry;
-//        }
-
-//        private List<Stack<string>> GetAllPossibleSubstrings(string inputString)
-//        {
-//            var accumulatorStack = new Stack<string>();
-//            var resultingSubstrings = new List<Stack<string>>();
-
-//            GetSubstrings(inputString, inputString.Length, accumulatorStack, resultingSubstrings);
-
-//            return resultingSubstrings;
-//        }
-
-//        private bool DictionaryHasSubstring(string substringToCheck)
-//        {
-//            for (int j = 0; j < _dictionary.Length; j++)
-//            {
-//                if (_dictionary[j] == substringToCheck)
-//                {
-//                    return true;
-//                }
-//            }
-
-//            return false;
-//        }
-
-//        private void GetSubstrings(
-//            string checkedString, 
-//            int lastChar, 
-//            Stack<string> accumulatorStack, 
-//            List<Stack<string>> resultingSubstrings)
-//        {
-//            for (int i = 1; i <= lastChar; i++)
-//            {
-//                var substringToCheck = checkedString.Substring(0, i);
-
-//                if (DictionaryHasSubstring(substringToCheck))
-//                {
-//                    if (i == lastChar)
-//                    {
-//                        resultingSubstrings.Add(accumulatorStack);
-//                        accumulatorStack = new Stack<string>();
-
-//                        return;
-//                    }
-
-//                    var newSubstringLength = lastChar - i;
-//                    var newSubstring = checkedString.Substring(i, newSubstringLength);
-//                    accumulatorStack.Push(substringToCheck);
-
-//                    GetSubstrings(newSubstring, newSubstringLength, accumulatorStack, resultingSubstrings);
-//                }
-//                else if (i == lastChar && accumulatorStack.Count != 0)
-//                {
-//                    // if the loop reaches the end of the word 
-//                    // and there is no  dictionary entry for checked substring, 
-//                    // then remove last valid entry and try to find new one
-//                    accumulatorStack.Pop();
-//                }
-//            }
-//        }
-//    }
-//}

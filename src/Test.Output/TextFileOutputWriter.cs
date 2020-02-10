@@ -22,8 +22,7 @@ namespace Test.Output
         public void WriteWords(List<(string, string[])> wordsWithSubstrings)
         {
             var text = GetFileText(wordsWithSubstrings);
-
-            File.AppendAllText(_filePath, text);
+            File.WriteAllText(_filePath, text);
         }
 
         private string GetFileText(List<(string, string[])> wordsWithSubstrings)
