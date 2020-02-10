@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Test.Helpers.Interfaces;
 
 namespace Test.Helpers
 {
@@ -12,7 +10,7 @@ namespace Test.Helpers
             {
                 return "Невозможно разбить.";
             }
-            return $"Разбили на {substrings.Length} части";
+            return $"Разбили на {substrings.Length} части.";
         }
     }
 }

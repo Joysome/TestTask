@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Domain;
+using Test.Repository.Interfaces;
 
 namespace Test.Repository
 {

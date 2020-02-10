@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Test.Domain.Interfaces;
 
-namespace Test.Domain
+namespace Test.Domain.WordBreakers
 {
     public class DepthFirstSearchWordBreaker : IWordBreaker
     {
@@ -14,7 +15,7 @@ namespace Test.Domain
             _dictionary = dictionary;
         }
 
-        public string[] ProcessWord(string word)
+        public string[] BreakWord(string word)
         {
             var wordBreakVariants = GetAllPossibleBreaks(word, _dictionary);
 

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Domain.Interfaces;
 
-namespace Test.Domain
+namespace Test.Domain.WordBreakers
 {
     public class DynamicWordBreaker : IWordBreaker
     {
@@ -15,7 +16,7 @@ namespace Test.Domain
             _dictionary = dictionary;
         }
 
-        public string[] ProcessWord(string word)
+        public string[] BreakWord(string word)
         {
             var possibleBreaks = GetAllPossibleBreaks(word);
 

@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Test.Domain\Test.Domain.csproj" />
+    <ProjectReference Include="..\Test.Helpers\Test.Helpers.csproj" />
+    <ProjectReference Include="..\Test.Output\Test.Output.csproj" />
     <ProjectReference Include="..\Test.Repositories\Test.Repositories.csproj" />
   </ItemGroup>
 

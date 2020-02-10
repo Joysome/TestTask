@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Test.Helpers
+namespace Test.Helpers.Interfaces
 {
     public interface ICommentaryGenerator
     {
