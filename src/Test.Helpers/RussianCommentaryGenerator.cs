@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Test.Helpers.Interfaces;
 
 namespace Test.Helpers
 {
-    class RussianCommentaryGenerator : ICommentaryGenerator
+    public class RussianCommentaryGenerator : ICommentaryGenerator
     {
-        public string Generate(string originalWord, string[] substrings)
+        public string Generate(int substringsCount)
         {
-            if(substrings == null)
+            if(substringsCount <= 0)
             {
                 return "Невозможно разбить.";
             }
-            return $"Разбили на {substrings.Length} части";
+            return $"Разбили на {substringsCount} части.";
         }
     }
 }

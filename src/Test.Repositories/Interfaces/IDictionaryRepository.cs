@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Test.Domain
+namespace Test.Repository.Interfaces
 {
-    public interface IWordBreaker
+    interface IDictionaryRepository
     {
-        string[] ProcessWord(string word);
+        Task<string[]> GetDictionaryWords();
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Test.Domain;
 
-namespace Test.Repository
+namespace Test.Repository.Interfaces
 {
     public interface IWordRepository
     {
