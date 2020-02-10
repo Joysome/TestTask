@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Test.Domain.Interfaces
 {
-    interface IWordProcessor
+    public interface IWordProcessor
     {
         List<(string, string[])> ProcessWords(string[] inputWordsArray);
     }

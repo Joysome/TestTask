@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Test.Domain;
+using Test.Domain.Interfaces;
 using Test.Domain.WordBreakers;
 using Test.Domain.WordProcessors;
 using Test.Helpers;
@@ -25,8 +26,8 @@ namespace Test
 
             var inputWordsArray = inputWords.Values.First().ToArray(); // TODO: do this properly for different languages support if needed
 
-            //var breaker = new DynamicWordBreaker(dictionary); // approach for small dictionaries & input words ammount
-            var breaker = new DepthFirstSearchWordBreaker(dictionary);
+            var breaker = new DynamicWordBreaker(dictionary); // approach for small dictionaries & input words ammount
+            //var breaker = new DepthFirstSearchWordBreaker(dictionary);
 
             //var processor = new SerialWordProcessor(breaker); // for test purposes only
             var processor = new ParallelWordProcessor(breaker);
@@ -36,15 +37,14 @@ namespace Test
 
             var resultingSubstrings = processor.ProcessWords(inputWordsArray);
 
-            stopwatch.Stop();
+            stopwatch.Stop(); // stop measuring
 
             WriteDiagnosticInfo(dictionary, inputWordsArray, breaker, processor, stopwatch);
 
-            //var outputWriter = new ConsoleOutputWriter();
-
+            //var outputWriter = new ConsoleOutputWriter(); // for test purposes only
             var outputWriter = new TextFileOutputWriter("C:\\test\\res.tsv", "de", new RussianCommentaryGenerator());
 
-            outputWriter.WriteWords(resultingSubstrings);
+            //outputWriter.WriteWords(resultingSubstrings);
 
             Console.ReadLine();
         }
@@ -52,8 +52,8 @@ namespace Test
         private static void WriteDiagnosticInfo(
             string[] dictionary, 
             string[] inputWordsArray, 
-            DepthFirstSearchWordBreaker breaker, 
-            ParallelWordProcessor processor, 
+            IWordBreaker breaker, 
+            IWordProcessor processor, 
             Stopwatch stopwatch)
         {
             Console.WriteLine(new string('=', 50));
