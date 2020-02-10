@@ -5,6 +5,6 @@ namespace Test.Output.Interfaces
 {
     public interface IOutputWriter
     {
-        void WriteWords(List<(string, string[])> wordsWithSubstrings);
+        void WriteWords(IEnumerable<(string, string[])> wordsWithSubstrings);
     }
 }

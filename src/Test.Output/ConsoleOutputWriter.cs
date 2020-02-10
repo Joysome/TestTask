@@ -7,7 +7,7 @@ namespace Test.Output
 {
     public class ConsoleOutputWriter : IOutputWriter
     {
-        public void WriteWords(List<(string, string[])> wordsWithSubstrings)
+        public void WriteWords(IEnumerable<(string, string[])> wordsWithSubstrings)
         {
             var sb = new StringBuilder();
 

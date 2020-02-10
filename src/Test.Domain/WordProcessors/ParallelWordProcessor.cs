@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Test.Domain.Interfaces;
 
@@ -13,9 +14,9 @@ namespace Test.Domain.WordProcessors
             _wordBreaker = wordBreaker;
         }
 
-        public List<(string, string[])> ProcessWords(string[] inputWords)
+        public IEnumerable<(string, string[])> ProcessWords(string[] inputWords)
         {
-            List<(string, string[])> resultingSubstrings = new List<(string, string[])>();
+            var resultingSubstrings = new ConcurrentBag<(string, string[])>();
 
             Parallel.For(0, inputWords.Length, i =>
             {

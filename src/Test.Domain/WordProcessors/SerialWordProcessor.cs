@@ -5,7 +5,6 @@ using Test.Domain.Interfaces;
 
 namespace Test.Domain.WordProcessors
 {
-    // For test purposes only.
     public class SerialWordProcessor : IWordProcessor
     {
         private readonly IWordBreaker _wordBreaker;
@@ -15,7 +14,7 @@ namespace Test.Domain.WordProcessors
             _wordBreaker = wordBreaker;
         }
 
-        public List<(string, string[])> ProcessWords(string[] inputWords)
+        public IEnumerable<(string, string[])> ProcessWords(string[] inputWords)
         {
             List<(string, string[])> resultingSubstrings = new List<(string, string[])>();
 

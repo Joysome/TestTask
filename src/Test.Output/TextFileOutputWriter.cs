@@ -19,13 +19,13 @@ namespace Test.Output
             _languageIdentifier = languageIdentifier;
             _commentaryGenerator = commentaryGenerator;
         }
-        public void WriteWords(List<(string, string[])> wordsWithSubstrings)
+        public void WriteWords(IEnumerable<(string, string[])> wordsWithSubstrings)
         {
             var text = GetFileText(wordsWithSubstrings);
             File.WriteAllText(_filePath, text);
         }
 
-        private string GetFileText(List<(string, string[])> wordsWithSubstrings)
+        private string GetFileText(IEnumerable<(string, string[])> wordsWithSubstrings)
         {
             var sb = new StringBuilder();
 

@@ -26,15 +26,15 @@ namespace Test
 
             var inputWordsArray = inputWords.Values.First().ToArray(); // TODO: do this properly for different languages support if needed
 
-            // var breaker = new DynamicWordBreaker(dictionary); // approach for small input words ammount
-            var breaker = new DepthFirstSearchWordBreaker(dictionary); // approach for small dictionaries 
+            //var breaker = new DepthFirstSearchWordBreaker(dictionary); // approach for small dictionaries. Ineffective for the task.
+            var breaker = new DynamicWordBreaker(dictionary); // approach for small input words ammount
 
-            var processor = new SerialWordProcessor(breaker); // for test purposes only
-            //var processor = new ParallelWordProcessor(breaker);
+            var processor = new SerialWordProcessor(breaker); // will work faster than parallel for dynamic breaker and small ammount of words
+            //var processor = new ParallelWordProcessor(breaker); // for large ammount of input words only due to concurrent collections usage
 
             var stopwatch = new Stopwatch();
             stopwatch.Start(); // start measuring
-
+             
             var resultingSubstrings = processor.ProcessWords(inputWordsArray);
 
             stopwatch.Stop(); // stop measuring
